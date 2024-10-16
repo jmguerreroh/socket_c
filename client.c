@@ -29,7 +29,7 @@ void func(int sockfd)
 	for (;;) {
 		// Limpia el buffer
 		bzero(buff, sizeof(buff));
-		printf("Enter the string : ");
+		printf("\tTo Server : ");
 		n = 0;
 
 		// Copia el mensaje del cliente en el buffer		

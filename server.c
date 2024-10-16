@@ -38,7 +38,7 @@ void func(int connfd)
 		read(connfd, buff, sizeof(buff));
 
 		// Muestra el buffer el cual contiene el contenido del cliente
-		printf("From client: %s\t To client : ", buff);
+		printf("From Client: %s\t To Client : ", buff);
 		bzero(buff, MAX);
 		n = 0;
 
