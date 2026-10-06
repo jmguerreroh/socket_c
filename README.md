@@ -21,6 +21,8 @@ Este proyecto implementa una comunicación bidireccional entre un cliente y un s
 socket_c/
 ├── client.c         # Código fuente del cliente
 ├── server.c         # Código fuente del servidor
+├── client_peticiones.c  # Variante: una petición por conexión (cliente)
+├── server_peticiones.c  # Variante: una petición por conexión (servidor)
 ├── Makefile         # Automatización de compilación
 └── README.md        # Este archivo
 ```
@@ -99,6 +101,32 @@ From Server : exit
 Server closed connection...
 ```
 
+## 🔁 Variante: una petición por conexión
+
+`server.c` y `client.c` mantienen **una** conversación en bucle con un único cliente. Muchos servidores
+(como las API sencillas por TCP) funcionan distinto: **cada petición usa su propia conexión**. Para ello están
+`server_peticiones.c` y `client_peticiones.c`, que se compilan con `make` y se prueban entre sí:
+
+```bash
+./server_peticiones 5000                 # terminal 1
+./client_peticiones 127.0.0.1 5000       # terminal 2: escribe una línea, recibe la respuesta; SALIR cierra el servidor
+```
+
+Qué cambia respecto a los ejemplos básicos:
+
+| Ejemplo básico | Variante por petición |
+|---|---|
+| Puerto e IP fijos en el código | Vienen como argumentos (`argv`) |
+| El servidor atiende a **un** cliente | `accept()` en un **bucle**: una conexión = una petición, y el servidor la **cierra** |
+| Un `read()` = «el mensaje» | El servidor lee **hasta el `\n`** (`recibir_linea`, con tiempo máximo) y el cliente **hasta que el servidor cierra** (`recibir_hasta_cierre`) |
+| Un `write()` | `enviar_texto`: `write()` en bucle hasta enviar todo |
+| Nada de IP del cliente | El servidor muestra la **IP y puerto** de cada cliente (`inet_ntop` / `ntohs`) |
+| `"exit"` | `SALIR` cierra el servidor; **Ctrl+C** también (sin `SA_RESTART`, para que `accept()` se interrumpa) |
+
+Los dos ficheros están organizados en dos partes (funciones de envío y recepción, y programa principal) con los
+pasos numerados (A: socket de escucha, B: bucle de `accept`, C: «hacer una petición»), pensados para explicarlos
+uno a uno y reutilizarlos en otros programas.
+
 ## 🔧 Configuración
 
 ### Parámetros principales (definidos en el código):
@@ -152,6 +180,6 @@ sudo netstat -tulpn | grep :8080  # Ver qué proceso usa el puerto
 
 ## 👥 Autor
 
-- **Jose Miguel Guerrero Hernandez** (josemiguel.guerrero@urjc.es)
+- **José Miguel Guerrero Hernández** (josemiguel.guerrero@urjc.es)
 - Universidad Rey Juan Carlos
 - Asignatura: Programación de Sistemas de Navegación

@@ -1,6 +1,6 @@
 /**
  * @file client.c
- * @author Jose Miguel Guerrero Hernandez (josemiguel.guerrero@urjc.es)
+ * @author José Miguel Guerrero Hernández (josemiguel.guerrero@urjc.es)
  * @brief Cliente socket en C - Envía cadenas de caracteres al servidor
  * @version 0.2
  * @date 2022-10-18

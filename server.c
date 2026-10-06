@@ -1,6 +1,6 @@
 /**
  * @file server.c
- * @author Jose Miguel Guerrero Hernandez (josemiguel.guerrero@urjc.es)
+ * @author José Miguel Guerrero Hernández (josemiguel.guerrero@urjc.es)
  * @brief Servidor socket en C - Envía cadenas de caracteres al cliente, si envia la palabra exit cierra las comunicaciones
  * @version 0.2
  * @date 2022-10-18
